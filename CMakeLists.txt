@@ -74,3 +74,23 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
 )
+
+# ============================================
+# Cricket Console Simulation (no SDL2/OpenGL needed)
+# ============================================
+set(CRICKET_SIM_SOURCES
+    src/cricket/cricket_main.cpp
+    src/cricket/MatchEngine.cpp
+    src/cricket/CricketTypes.cpp
+    src/cricket/TeamData.cpp
+)
+
+add_executable(CricketSim ${CRICKET_SIM_SOURCES})
+
+target_include_directories(CricketSim PRIVATE ${CMAKE_SOURCE_DIR}/src)
+
+if(MSVC)
+    target_compile_options(CricketSim PRIVATE /W4 /O2)
+else()
+    target_compile_options(CricketSim PRIVATE -Wall -Wextra -O2)
+endif()
